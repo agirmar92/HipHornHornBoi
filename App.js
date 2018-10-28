@@ -1,23 +1,31 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, TextInput, View, Button, StatusBar, Alert, TouchableOpacity, Image } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+  Button,
+  StatusBar,
+  Alert,
+  TouchableOpacity,
+  Image,
+} from 'react-native';
 import { Audio, Asset, ScreenOrientation, Font, AppLoading } from 'expo';
+import YeahBoi from './assets/yeahboi.mp3';
 
 export default class App extends Component {
   state = {
-    isReady: false
+    isReady: false,
   };
 
   _loadResourcesAsync = async () => {
     return Promise.all([
-      Asset.loadAsync([
-        require('./assets/horn.png'),
-        require('./assets/yeahboi.mp3')
-      ]),
+      Asset.loadAsync([require('./assets/horn.png'), YeahBoi]),
       Font.loadAsync({
-        Lobster: require('./assets/fonts/LobsterTwo-Regular.ttf')
-      })
+        Lobster: require('./assets/fonts/LobsterTwo-Regular.ttf'),
+      }),
     ]);
-  }
+  };
 
   constructor(props) {
     super(props);
@@ -28,7 +36,7 @@ export default class App extends Component {
       allowsRecordingIOS: false,
       interruptionModeAndroid: 1,
       interruptionModeIOS: 0,
-      shouldDuckAndroid: true
+      shouldDuckAndroid: true,
     });
   }
 
@@ -45,9 +53,7 @@ export default class App extends Component {
 
     return (
       <View style={{ flex: 1 }}>
-        <StatusBar
-          barStyle="light-content"
-        />
+        <StatusBar barStyle="light-content" />
         <View style={styles.mainContainer}>
           <View style={styles.logoContainer}>
             <Text style={styles.logo}>Boi</Text>
@@ -55,7 +61,8 @@ export default class App extends Component {
           <View style={styles.lowerContainer}>
             <TouchableOpacity
               onPress={this._playSound}
-              style={styles.hornContainer} >
+              style={styles.hornContainer}
+            >
               <Image
                 style={styles.horn}
                 source={require('./assets/horn.png')}
@@ -67,12 +74,14 @@ export default class App extends Component {
     );
   }
 
-  _playSound() {
+  async _playSound() {
     const soundObject = new Audio.Sound();
-    soundObject.loadAsync(require('./assets/yeahboi.mp3')).then(
-      data => soundObject.playAsync(),
-      error => alert(error)
-    );
+    try {
+      await soundObject.loadAsync(YeahBoi);
+      await soundObject.playAsync();
+    } catch (error) {
+      alert(error);
+    }
   }
 }
 
@@ -82,31 +91,31 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     backgroundColor: '#33658A',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   logoContainer: {
     flex: 1,
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   logo: {
     color: '#86BBD8',
     fontSize: 130,
     fontFamily: 'Lobster',
-    width: 'auto'
+    width: 'auto',
   },
   lowerContainer: {
     flex: 2,
     width: '100%',
     flexDirection: 'row',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   hornContainer: {
     width: '100%',
-    maxWidth: '65%'
+    maxWidth: '65%',
   },
   horn: {
     width: '100%',
     height: '100%',
-    resizeMode: 'contain'
-  }
+    resizeMode: 'contain',
+  },
 });

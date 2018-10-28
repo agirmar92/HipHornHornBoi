@@ -4,12 +4,13 @@
     "icon": "./assets/app-icon.png",
     "version": "0.9.0",
     "slug": "boiboiboi",
-    "sdkVersion": "23.0.0",
+    "sdkVersion": "24.0.0",
     "ios": {
       "bundleIdentifier": "com.refirnir.boiboiboi"
     },
     "android": {
       "package": "com.refirnir.boiboiboi"
-    }
+    },
+    "description": ""
   }
 }
